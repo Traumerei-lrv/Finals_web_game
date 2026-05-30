@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hero Selection — SLAPTHAT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Fredoka+One&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/selection.css">
+  <script defer src="js/selection.js"></script>
+</head>
+<body>
+<main class="slap-page">
+  <section class="selection-screen" id="selectionScreen">
+    <div class="selection-frame">
+
+      <header class="selection-header">
+        <h1>Select your fighter</h1>
+        <p class="selection-copy" id="selectionStatus">Player 1 starts — 30 seconds per pick</p>
+      </header>
+
+      <div class="selection-panels">
+
+        <!-- Player 1 -->
+        <article class="preview-card" data-player="1">
+          <div class="preview-card__label">
+            <span>Player 1</span>
+            <strong id="turnLabelPlayer1">Waiting</strong>
+          </div>
+          <div class="preview-card__stage">
+            <img id="player1Preview" alt="Player 1 hero preview" class="preview-card__image"
+              src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" />
+            <div class="preview-card__fallback">Awaiting pick</div>
+          </div>
+        </article>
+
+        <!-- Center -->
+        <div class="selection-center">
+          <div class="selection-vs">VS</div>
+          <div class="selection-timer" aria-live="polite">
+            <span id="turnLabel">Player 1</span>
+            <strong id="turnTimer">30</strong>
+            <small>seconds</small>
+          </div>
+          <button class="lock-button" type="button" id="lockBtn"><span>Lock In</span></button>
+        </div>
+
+        <!-- Player 2 -->
+        <article class="preview-card" data-player="2">
+          <div class="preview-card__label">
+            <span>Player 2</span>
+            <strong id="turnLabelPlayer2">Waiting</strong>
+          </div>
+          <div class="preview-card__stage">
+            <img id="player2Preview" alt="Player 2 hero preview" class="preview-card__image"
+              src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" />
+            <div class="preview-card__fallback">Awaiting pick</div>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Hero Roster -->
+      <div class="selection-roster-wrap">
+        <div class="selection-roster" id="heroCardGrid" aria-label="Hero cards">
+
+          <button class="hero-card" type="button" data-hero-id="tuff-baby" data-hero-name="Tuff Baby">
+            <img src="tuff-tuff-baby.gif" alt="Tuff Baby" class="hero-card__image" />
+            <span class="hero-card__slot hero-card__slot--archer">Combo</span>
+            <strong>hero card placeholder</strong>
+            <small>Rapid slap buff</small>
+          </button>
+
+          <button class="hero-card" type="button" data-hero-id="elmo-rage" data-hero-name="Elmo Rage">
+            <img src="tuff-tuff-baby.gif" alt="Elmo Rage" class="hero-card__image" />
+            <span class="hero-card__slot hero-card__slot--samurai">Rage</span>
+            <strong>hero card placeholder</strong>
+            <small>Fire aura slaps</small>
+          </button>
+
+          <button class="hero-card" type="button" data-hero-id="will-slap" data-hero-name="Will Slap">
+            <img src="tuff-tuff-baby.gif" alt="Will Slap" class="hero-card__image" />
+            <span class="hero-card__slot hero-card__slot--warrior">Counter</span>
+            <strong>hero card placeholder</strong>
+            <small>Instant counter-hit</small>
+          </button>
+
+          <button class="hero-card" type="button" data-hero-id="tung-tank" data-hero-name="Tung Tank">
+            <img src="tuff-tuff-baby.gif" alt="Tung Tank" class="hero-card__image" />
+            <span class="hero-card__slot hero-card__slot--warrior">Tank</span>
+            <strong>hero card placeholder</strong>
+            <small>Heavy knockback</small>
+          </button>
+
+          <!-- Placeholder cards (locked/coming soon) -->
+          <button class="hero-card" type="button" data-hero-id="rage-face" data-hero-name="Rage Face" disabled>
+            <img src="tuff-tuff-baby.gif" alt="Rage Face" class="hero-card__image" />
+            <span class="hero-card__slot hero-card__slot--warrior">Chaos</span>
+            <strong>hero card placeholder</strong>
+            <small>Coming soon</small>
+          </button>
+
+          <button class="hero-card" type="button" data-hero-id="baby-laugh" data-hero-name="Baby Laugh" disabled>
+            <img src="tuff-tuff-baby.gif" alt="Baby Laugh" class="hero-card__image" />
+            <span class="hero-card__slot hero-card__slot--rogue">Debuff</span>
+            <strong>hero card placeholder</strong>
+            <small>Coming soon</small>
+          </button>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+</body>
+</html>

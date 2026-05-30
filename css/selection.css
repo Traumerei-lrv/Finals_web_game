@@ -1,0 +1,394 @@
+/* ═════════════════════════════════════════════════════════
+   SLAPTHAT HERO SELECTION — MEME-STYLE DESIGN
+   Consistent with landing page aesthetic
+   ═════════════════════════════════════════════════════════ */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+.slap-page {
+  background: #FFD700;
+  min-height: 100vh;
+  font-family: 'Fredoka One', cursive, sans-serif;
+  overflow-y: auto;
+  position: relative;
+  isolation: isolate;
+}
+
+.slap-page::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(circle, #e6b800 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
+  opacity: 0.45;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.slap-page::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.18;
+  background:
+    url('../gif/flying_monster.gif') left 6% top 18% / 150px auto no-repeat,
+    url('../gif/dogie_mons.gif') right 8% bottom 12% / 160px auto no-repeat;
+}
+
+.selection-screen {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.selection-frame {
+  width: 100%;
+  max-width: 1200px;
+}
+
+.selection-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.selection-header h1 {
+  font-family: 'Bangers', cursive;
+  font-size: clamp(48px, 12vw, 96px);
+  color: #1a1a1a;
+  text-shadow: 4px 4px 0 #ff3c3c, 7px 7px 0 #fff;
+  transform: rotate(-1deg);
+  margin-bottom: 12px;
+  letter-spacing: 3px;
+}
+
+.selection-kicker {
+  font-family: 'Fredoka One', cursive;
+  font-size: 24px;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+  letter-spacing: 2px;
+}
+
+.selection-copy {
+  font-family: 'Fredoka One', cursive;
+  font-size: 18px;
+  color: #1a1a1a;
+  margin-top: 12px;
+}
+
+/* ─── Selection Panels (Player previews + Center) ─── */
+.selection-panels {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 24px;
+  margin-bottom: 48px;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .selection-panels {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+}
+
+/* Preview Cards for Players */
+.preview-card {
+  background: #fff;
+  border: 4px solid #1a1a1a;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  box-shadow: 6px 6px 0 #1a1a1a;
+}
+
+.preview-card__label {
+  margin-bottom: 12px;
+}
+
+.preview-card__label span {
+  font-family: 'Fredoka One', cursive;
+  font-size: 14px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.preview-card__label strong {
+  font-family: 'Bangers', cursive;
+  font-size: 28px;
+  color: #1a1a1a;
+  display: block;
+  margin-top: 4px;
+}
+
+.preview-card__stage {
+  position: relative;
+  height: 240px;
+  background: #f5f5f5;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.preview-card__image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.preview-card__fallback {
+  font-family: 'Fredoka One', cursive;
+  font-size: 14px;
+  color: #999;
+  text-align: center;
+  padding: 16px;
+}
+
+/* Center Section (VS + Timer + Lock button) */
+.selection-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px;
+  background: #fff;
+  border: 4px solid #1a1a1a;
+  border-radius: 12px;
+  box-shadow: 6px 6px 0 #1a1a1a;
+}
+
+.selection-vs {
+  font-family: 'Bangers', cursive;
+  font-size: 48px;
+  color: #ff3c3c;
+  text-shadow: 2px 2px 0 #1a1a1a;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.selection-timer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin: 12px 0;
+}
+
+.selection-timer span {
+  font-family: 'Fredoka One', cursive;
+  font-size: 16px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.selection-timer strong {
+  font-family: 'Bangers', cursive;
+  font-size: 64px;
+  color: #1a1a1a;
+  line-height: 1;
+}
+
+.selection-timer small {
+  font-family: 'Fredoka One', cursive;
+  font-size: 12px;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.lock-button {
+  font-family: 'Bangers', cursive;
+  font-size: 20px;
+  background: #ff3c3c;
+  color: #fff;
+  border: 3px solid #1a1a1a;
+  padding: 12px 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s;
+  box-shadow: 4px 4px 0 #1a1a1a;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 8px;
+}
+
+.lock-button:hover:not(:disabled) {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #1a1a1a;
+}
+
+.lock-button:active:not(:disabled) {
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 #1a1a1a;
+}
+
+.lock-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ─── Divider ─── */
+.divider {
+  font-family: 'Bangers', cursive;
+  font-size: 32px;
+  color: #1a1a1a;
+  text-align: center;
+  margin: 48px 0 32px;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 0 #ff3c3c;
+  transform: rotate(-1deg);
+}
+
+/* ─── Hero Roster ─── */
+.selection-roster-wrap {
+  margin-bottom: 24px;
+}
+
+.selection-roster {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.hero-card {
+  background: #fff;
+  border: 3px solid #1a1a1a;
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s, background 0.1s;
+  box-shadow: 4px 4px 0 #1a1a1a;
+  text-align: center;
+  font-family: 'Fredoka One', cursive;
+}
+
+.hero-card__image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border: 2px solid #1a1a1a;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  box-shadow: 3px 3px 0 #1a1a1a;
+}
+
+.hero-card:hover:not(:disabled) {
+  transform: translate(-3px, -3px);
+  box-shadow: 7px 7px 0 #1a1a1a;
+  background: #fffacd;
+}
+
+.hero-card:active:not(:disabled) {
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 #1a1a1a;
+}
+
+.hero-card.is-drafted {
+  background: #ffe680;
+  border-color: #ff3c3c;
+  border-width: 4px;
+}
+
+.hero-card.is-selected {
+  background: #ff3c3c;
+  color: #fff;
+  border-color: #fff;
+}
+
+.hero-card:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: #f0f0f0;
+}
+
+.hero-card__slot {
+  display: inline-block;
+  font-family: 'Fredoka One', cursive;
+  font-size: 12px;
+  background: #ff3c3c;
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.hero-card.is-drafted .hero-card__slot {
+  background: #1a1a1a;
+}
+
+.hero-card.is-selected .hero-card__slot {
+  background: #fff;
+  color: #ff3c3c;
+}
+
+.hero-card strong {
+  font-family: 'Bangers', cursive;
+  font-size: 20px;
+  display: block;
+  margin: 8px 0 4px;
+  color: #1a1a1a;
+  letter-spacing: 1px;
+}
+
+.hero-card.is-selected strong {
+  color: #fff;
+}
+
+.hero-card small {
+  font-family: 'Fredoka One', cursive;
+  font-size: 12px;
+  color: #666;
+  display: block;
+  margin-top: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.hero-card.is-selected small {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Utility classes */
+.is-hidden {
+  display: none !important;
+}
+
+.is-selected {
+  font-weight: bold;
+}
+
+.is-drafted {
+  border-width: 4px;
+}
+
+.is-available {
+  outline: 3px dashed #ff3c3c;
+  outline-offset: 2px;
+}
