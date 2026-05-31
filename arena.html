@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Battle Arena — SLAPTHAT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Fredoka+One&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/arena.css" />
+  <script defer src="js/arena.js"></script>
+</head>
+<body>
+  <main class="arena-page">
+    <section class="arena-shell" aria-label="Slap battle arena">
+      <header class="arena-hud">
+        <div class="health-panel health-panel--left">
+          <div class="health-panel__label">
+            <span>Player 1</span>
+            <strong id="player1Name">Waiting</strong>
+          </div>
+          <div class="health-bar" aria-label="Player 1 health">
+            <div class="health-bar__fill health-bar__fill--left" id="player1HealthFill"></div>
+          </div>
+          <div class="meter-block" aria-label="Player 1 slap meter">
+            <div class="meter-block__label">
+              <span>Slap Meter</span>
+              <strong id="player1MeterText">0%</strong>
+            </div>
+            <div class="meter-bar">
+              <div class="meter-bar__fill meter-bar__fill--left" id="player1MeterFill"></div>
+            </div>
+          </div>
+          <small id="player1HealthText">100 / 100</small>
+        </div>
+
+        <div class="arena-verse">
+          <span>VS</span>
+          <strong id="roundLabel">ROUND 1</strong>
+        </div>
+
+        <div class="health-panel health-panel--right">
+          <div class="health-panel__label">
+            <span>Player 2</span>
+            <strong id="player2Name">Waiting</strong>
+          </div>
+          <div class="health-bar">
+            <div class="health-bar__fill health-bar__fill--right" id="player2HealthFill"></div>
+          </div>
+          <div class="meter-block meter-block--right" aria-label="Player 2 slap meter">
+            <div class="meter-block__label">
+              <span>Slap Meter</span>
+              <strong id="player2MeterText">0%</strong>
+            </div>
+            <div class="meter-bar">
+              <div class="meter-bar__fill meter-bar__fill--right" id="player2MeterFill"></div>
+            </div>
+          </div>
+          <small id="player2HealthText">100 / 100</small>
+        </div>
+      </header>
+
+      <section class="battlefield">
+        <div class="battle-info">
+          <p class="battle-info__copy">Player 1 slaps with A. Player 2 slaps with L.</p>
+          <div class="battle-info__status" id="battleStatus">Ready to slap.</div>
+        </div>
+
+        <div class="fighters">
+          <article class="fighter fighter--left" data-side="player1">
+            <div class="fighter__aura"></div>
+            <div class="fighter__stage">
+              <div class="fighter__portrait">
+                <div class="fighter__death" id="player1Death" aria-hidden="true"></div>
+                <div class="fighter__victory" id="player1Victory" aria-hidden="true"></div>
+                <img id="player1Portrait" alt="Player 1 fighter" />
+                <div class="fighter__placeholder" id="player1Placeholder">P1</div>
+              </div>
+              <img class="fighter__hit-effect fighter__hit-effect--normal" src="assets/hit_effect/hit_effect1.png" alt="" aria-hidden="true" />
+              <img class="fighter__hit-effect fighter__hit-effect--critical" src="assets/hit_effect/hit_effect2.png" alt="" aria-hidden="true" />
+              <strong id="player1Label">Player 1</strong>
+              <span>Press A to slap</span>
+            </div>
+          </article>
+
+          <div class="arena-center">
+            <div class="arena-center__impact" id="impactText">SLAP!</div>
+          </div>
+
+          <article class="fighter fighter--right" data-side="player2">
+            <div class="fighter__aura"></div>
+            <div class="fighter__stage">
+              <div class="fighter__portrait fighter__portrait--face-left">
+                <div class="fighter__death" id="player2Death" aria-hidden="true"></div>
+                <div class="fighter__victory" id="player2Victory" aria-hidden="true"></div>
+                <img id="player2Portrait" alt="Player 2 fighter" />
+                <div class="fighter__placeholder" id="player2Placeholder">P2</div>
+              </div>
+              <img class="fighter__hit-effect fighter__hit-effect--normal" src="assets/hit_effect/hit_effect1.png" alt="" aria-hidden="true" />
+              <img class="fighter__hit-effect fighter__hit-effect--critical" src="assets/hit_effect/hit_effect2.png" alt="" aria-hidden="true" />
+              <strong id="player2Label">Player 2</strong>
+              <span>Press L to slap</span>
+            </div>
+          </article>
+        </div>
+      </section>
+    </section>
+  </main>
+</body>
+</html>

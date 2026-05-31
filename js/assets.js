@@ -6,6 +6,7 @@ const Assets = (function(){
     'elmo.jpeg',
     'tungtung.webp',
     'baby-laugh-ai-baby.webp',
+    'assets/sasuke/sasuke_Dance.gif',
     'assets/meme1.png',
     'gif/flying_monster.gif',
     'gif/dogie_mons.gif'
