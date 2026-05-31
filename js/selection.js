@@ -224,13 +224,69 @@ const MEME_STATUS_LINES = [
   'No meta. Only vibes.',
   'Brainrot buff activated.'
 ];
+const PREVIEW_SOUND_BY_HERO_ID = {
+  sasuke: './assets/sounds/sasake.mp3',
+  'elmo-rage': './assets/sounds/einstein.mp3',
+  swag: './assets/sounds/side-eye.mp3',
+  stone: './assets/sounds/awwww-so-cute-ishowspeed.mp3'
+};
+const previewSoundState = {
+  audioBases: new Map(),
+  activeClip: null,
+  heroId: '',
+  src: ''
+};
 
 function randomMemeLine() {
   return MEME_STATUS_LINES[Math.floor(Math.random() * MEME_STATUS_LINES.length)];
 }
 
+function stopPreviewSound() {
+  if (previewSoundState.activeClip) {
+    previewSoundState.activeClip.pause();
+    previewSoundState.activeClip.currentTime = 0;
+    previewSoundState.activeClip = null;
+  }
+  previewSoundState.heroId = '';
+  previewSoundState.src = '';
+}
+
+function playPreviewSound(hero) {
+  if (!hero || !hero.id) return;
+  const src = PREVIEW_SOUND_BY_HERO_ID[hero.id];
+  if (!src) return;
+  const base = previewSoundState.audioBases.get(hero.id);
+  if (!base) return;
+
+  if (previewSoundState.heroId === hero.id && previewSoundState.activeClip && !previewSoundState.activeClip.paused) {
+    return;
+  }
+
+  stopPreviewSound();
+  const clip = base.cloneNode();
+  clip.volume = 0.9;
+  previewSoundState.activeClip = clip;
+  previewSoundState.heroId = hero.id;
+  previewSoundState.src = src;
+
+  const playPromise = clip.play();
+  if (playPromise && typeof playPromise.catch === 'function') {
+    playPromise.catch((error) => {
+      console.warn('Preview sound blocked/unavailable', error);
+    });
+  }
+}
+
 /* ── Boot ──────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
+  Object.entries(PREVIEW_SOUND_BY_HERO_ID).forEach(([heroId, src]) => {
+    const base = document.createElement('audio');
+    base.preload = 'auto';
+    base.setAttribute('playsinline', 'true');
+    base.src = src;
+    previewSoundState.audioBases.set(heroId, base);
+  });
+
   const heroCards = document.querySelectorAll('[data-hero-id]');
   heroCards.forEach(card => {
     if (!card.disabled) {
@@ -249,6 +305,8 @@ document.addEventListener('DOMContentLoaded', () => {
   heroSelectionState.drafts = [null, null];
   beginTurn(0);
 });
+
+window.addEventListener('pagehide', stopPreviewSound);
 
 /* ── Turn management ───────────────────────────────────────── */
 function beginTurn(playerIndex) {
@@ -275,6 +333,7 @@ function selectHero(heroId) {
     carouselState.activeIndex = heroIndex;
   }
   heroSelectionState.drafts[heroSelectionState.activePlayerIndex] = hero;
+  playPreviewSound(hero);
   heroSelectionState.statusLine = `Player ${heroSelectionState.activePlayerIndex + 1} is previewing ${hero.name}. ${randomMemeLine()}`;
   renderHeroSelection();
   scrollCarouselCardIntoView(heroId, true);
@@ -364,6 +423,7 @@ function autoPickHero() {
 
 function completeSelection() {
   clearHeroTimer();
+  stopPreviewSound();
   heroSelectionState.isActive = false;
   heroSelectionState.secondsRemaining = 0;
   window.gameSelection = {

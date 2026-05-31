@@ -66,6 +66,22 @@ const SLAP_FRAME_FILENAMES = [
   'tile006.png',
   'tile007.png'
 ];
+const HIT_SOUND_FILES = [
+  'assets/sounds/hit1.wav',
+  'assets/sounds/hit2.wav',
+  'assets/sounds/hit3.wav',
+  'assets/sounds/hit4.wav'
+];
+const HURT_SOUND_FILES = [
+  'assets/sounds/hurt1.wav',
+  'assets/sounds/hurt2.wav',
+  'assets/sounds/hurt3.wav',
+  'assets/sounds/hurt4.wav'
+];
+const CRITICAL_SOUND_FILE = 'assets/sounds/explosion.wav';
+const DEATH_SOUND_FILE = 'assets/sounds/lego-yoda-death-sound-effect.mp3';
+const VICTORY_SOUND_FILE = 'assets/sounds/fatality.mp3';
+const soundCache = new Map();
 
 document.addEventListener('DOMContentLoaded', () => {
   hydrateFighters();
@@ -772,6 +788,11 @@ function triggerSlap(attackerId, defenderId) {
   } else if (attackerId === 'player2') {
     playPlayer2SlapAnimation();
   }
+  if (isCritical) {
+    playCriticalSoundEffect();
+  } else {
+    playHitSoundEffect();
+  }
 
   animateHit(attackerId, defenderId, isCritical);
   renderArena();
@@ -892,6 +913,52 @@ function showBattleStatus(message) {
   if (status) status.textContent = message;
 }
 
+function pickRandom(list) {
+  if (!Array.isArray(list) || !list.length) return '';
+  return list[Math.floor(Math.random() * list.length)] || '';
+}
+
+function playSoundEffect(src, volume = 1) {
+  if (!src) return;
+  try {
+    let base = soundCache.get(src);
+    if (!base) {
+      base = new Audio(src);
+      base.preload = 'auto';
+      soundCache.set(src, base);
+    }
+
+    const clip = base.cloneNode();
+    clip.volume = Math.max(0, Math.min(1, volume));
+    const playPromise = clip.play();
+    if (playPromise && typeof playPromise.catch === 'function') {
+      playPromise.catch(() => {});
+    }
+  } catch (error) {
+    // Ignore playback issues (unsupported format/autoplay policies)
+  }
+}
+
+function playHitSoundEffect() {
+  playSoundEffect(pickRandom(HIT_SOUND_FILES), 0.8);
+}
+
+function playHurtSoundEffect() {
+  playSoundEffect(pickRandom(HURT_SOUND_FILES), 0.85);
+}
+
+function playCriticalSoundEffect() {
+  playSoundEffect(CRITICAL_SOUND_FILE, 0.95);
+}
+
+function playDeathSoundEffect() {
+  playSoundEffect(DEATH_SOUND_FILE, 0.95);
+}
+
+function playVictorySoundEffect() {
+  playSoundEffect(VICTORY_SOUND_FILE, 0.95);
+}
+
 function applyCriticalStun(playerId) {
   const fighter = ARENA_STATE.fighters[playerId];
   const confuseFrames = getConfuseFrames(fighter?.hero, playerId);
@@ -929,6 +996,7 @@ function playDeathAnimation(playerId) {
   const deathEl = document.getElementById(`${playerId}Death`);
   const imageEl = document.getElementById(`${playerId}Portrait`);
   if (!deathSheet || !deathConfig || !deathEl || !imageEl) return;
+  playDeathSoundEffect();
 
   clearPlayerStun(playerId);
   if (playerId === 'player1') {
@@ -998,6 +1066,7 @@ function playVictoryAnimation(playerId) {
   const victoryEl = document.getElementById(`${playerId}Victory`);
   const imageEl = document.getElementById(`${playerId}Portrait`);
   if (!victorySheet || !victoryConfig || !victoryEl || !imageEl) return;
+  playVictorySoundEffect();
 
   clearPlayerStun(playerId);
   if (playerId === 'player1') {
@@ -1063,6 +1132,7 @@ function playPlayerHurtAnimation(playerId) {
   const fighter = ARENA_STATE.fighters[playerId];
   const hurtFrames = getHurtFrames(fighter?.hero, playerId);
   if (!hurtFrames.length) return;
+  playHurtSoundEffect();
   playHurtAnimation(playerId, hurtFrames);
 }
 
