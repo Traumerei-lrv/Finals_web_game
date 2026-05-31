@@ -2,7 +2,7 @@
 const HERO_SELECTION = [
   {
     id: 'sasuke',
-    name: 'Sasuke',
+    name: 'Sasake',
     preview: 'assets/sasuke/tile000.gif',
     assetRoot: 'assets/sasuke',
     slapFolder: 'Slap',
@@ -38,11 +38,11 @@ const HERO_SELECTION = [
       player1Scale: 0.91,
       player2Scale: 0.83
     },
-    shortName: 'Sasuke'
+    shortName: 'Sasake'
   },
   {
     id: 'elmo-rage',
-    name: 'Elmo Rage',
+    name: 'Einstein',
     preview: './assets/epstein/tile000.gif',
     assetRoot: 'assets/epstein',
     slapFolder: 'slap',
@@ -78,22 +78,7 @@ const HERO_SELECTION = [
       player1Scale: 0.95,
       player2Scale: 0.86
     },
-    shortName: 'Elmo'
-  },
-  {
-    id: 'tung-tank',
-    name: 'Tung Tank',
-    preview: 'tuff-tuff-baby.gif',
-    shortName: 'Tung'
-  },
-  {
-    id: 'tungtung',
-    name: 'TungTung',
-    preview: 'assets/tungtung/tuntung_poster-preview.png',
-    previewType: 'video',
-    previewPoster: 'assets/tungtung/tuntung_poster-preview.png',
-    previewVideo: 'assets/tungtung/tungtung_preview.mp4',
-    shortName: 'TungTung'
+    shortName: 'Einstein'
   },
   {
     id: 'swag',
@@ -140,7 +125,73 @@ const HERO_SELECTION = [
       player1TranslateY: 4,
       player2TranslateY: 4
     },
+    victoryFolder: 'victory',
+    victorySheet: 'victory_sheet.png',
+    victoryPlayer1Folder: 'player1_victory',
+    victoryPlayer2Folder: 'player2_victory',
+    victoryFrameCount: 4,
+    victoryPlayer2Reversed: true,
+    victoryAlign: {
+      player1Scale: 0.92,
+      player2Scale: 0.92,
+      player1TranslateY: 4,
+      player2TranslateY: 4
+    },
     shortName: 'Swag'
+  },
+  {
+    id: 'stone',
+    name: 'Stone',
+    preview: 'assets/stone/preview/dance000.gif',
+    assetRoot: 'assets/stone',
+    slapFolder: 'slap',
+    slapPlayer1Folder: 'player1_slap',
+    slapPlayer2Folder: 'player2_slap',
+    slapFrameFilenames: [
+      'slap000.png',
+      'slap001.png',
+      'slap002.png',
+      'slap003.png',
+      'slap004.png',
+      'slap005.png'
+    ],
+    hurtFolder: 'hurt',
+    hurtPlayer1Folder: 'player1_hurt',
+    hurtPlayer2Folder: 'player2_hurt',
+    hurtFrame: 'hurt_sheet.png',
+    confuseFolder: 'confuse',
+    confusePlayer1Folder: 'player1_confuse',
+    confusePlayer2Folder: 'player2_confuse',
+    confuseFrame: 'confuse.png',
+    deathFolder: 'death',
+    deathSheet: 'death_sprite.png',
+    deathPlayer1Folder: 'player1_death',
+    deathPlayer2Folder: 'player2_death',
+    deathFrameCount: 6,
+    deathPlayer2Reversed: true,
+    deathAlign: {
+      player1Scale: 0.92,
+      player2Scale: 0.92,
+      player1TranslateY: 4,
+      player2TranslateY: 4
+    },
+    victoryFolder: 'victory',
+    victorySheet: 'victory_sheet.png',
+    victoryPlayer1Folder: 'player1_victory',
+    victoryPlayer2Folder: 'player2_victory',
+    victoryFrameCount: 4,
+    victoryPlayer2Reversed: false,
+    victoryAlign: {
+      player1Scale: 0.92,
+      player2Scale: 0.92,
+      player1TranslateY: 4,
+      player2TranslateY: 4
+    },
+    hurtAlign: {
+      player1Scale: 0.92,
+      player2Scale: 0.92
+    },
+    shortName: 'Stone'
   }
 ];
 
