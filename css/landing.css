@@ -86,13 +86,19 @@ body {
 .intro-hand {
   width: clamp(160px, 25vw, 320px);
   transform: translate(-38vw, 0) rotate(-18deg) scale(0.9);
-  animation: introSlap 0.58s cubic-bezier(0.16, 0.94, 0.38, 1) forwards;
 }
 
 .intro-impact {
   width: clamp(190px, 28vw, 360px);
   opacity: 0;
   transform: scale(0.2);
+}
+
+.intro-sequence.is-playing .intro-hand {
+  animation: introSlap 0.58s cubic-bezier(0.16, 0.94, 0.38, 1) forwards;
+}
+
+.intro-sequence.is-playing .intro-impact {
   animation: introImpact 0.72s ease-out 0.34s forwards;
 }
 

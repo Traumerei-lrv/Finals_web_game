@@ -5,58 +5,22 @@
   const landingPage = document.querySelector('.landing-page');
   const introSequence = document.getElementById('introSequence');
   const slapAudio = document.getElementById('slapSfx');
-  let introSoundPlayed = false;
-  let soundFallbackBound = false;
+
+  const INTRO_DURATION_MS = 1180;
+  let introStarted = false;
+  let introFinished = false;
+  let introStartFallbackBound = false;
 
   if (slapAudio) {
     slapAudio.load();
   }
 
-  function unbindSoundFallback() {
-    if (!soundFallbackBound) {
-      return;
-    }
-    window.removeEventListener('pointerdown', playSlapSound);
-    window.removeEventListener('keydown', playSlapSound);
-    soundFallbackBound = false;
-  }
-
-  function bindSoundFallback() {
-    if (soundFallbackBound || introSoundPlayed) {
-      return;
-    }
-    window.addEventListener('pointerdown', playSlapSound, { once: true });
-    window.addEventListener('keydown', playSlapSound, { once: true });
-    soundFallbackBound = true;
-  }
-
-  function playSlapSound() {
-    if (!slapAudio || introSoundPlayed) {
-      return;
-    }
-
-    try {
-      slapAudio.currentTime = 0;
-      const playAttempt = slapAudio.play();
-      if (playAttempt && typeof playAttempt.catch === 'function') {
-        playAttempt
-          .then(() => {
-            introSoundPlayed = true;
-            unbindSoundFallback();
-          })
-          .catch(() => {
-            bindSoundFallback();
-          });
-      } else {
-        introSoundPlayed = true;
-        unbindSoundFallback();
-      }
-    } catch (_error) {
-      bindSoundFallback();
-    }
-  }
-
   function finishIntro() {
+    if (introFinished) {
+      return;
+    }
+    introFinished = true;
+
     if (landingPage) {
       landingPage.classList.add('is-ready');
     }
@@ -65,11 +29,78 @@
     }
   }
 
+  function startIntroVisuals() {
+    if (introStarted) {
+      return;
+    }
+    introStarted = true;
+
+    if (introSequence) {
+      introSequence.classList.add('is-playing');
+    }
+
+    window.setTimeout(finishIntro, INTRO_DURATION_MS);
+  }
+
+  function unbindIntroStartFallback() {
+    if (!introStartFallbackBound) {
+      return;
+    }
+    window.removeEventListener('pointerdown', handleIntroStartGesture);
+    window.removeEventListener('keydown', handleIntroStartGesture);
+    introStartFallbackBound = false;
+  }
+
+  function bindIntroStartFallback() {
+    if (introStartFallbackBound || introStarted) {
+      return;
+    }
+    window.addEventListener('pointerdown', handleIntroStartGesture, { once: true });
+    window.addEventListener('keydown', handleIntroStartGesture, { once: true });
+    introStartFallbackBound = true;
+  }
+
+  function handleIntroStartGesture() {
+    unbindIntroStartFallback();
+    tryStartIntro();
+  }
+
+  function tryStartIntro() {
+    if (introStarted) {
+      return;
+    }
+
+    if (!slapAudio) {
+      startIntroVisuals();
+      return;
+    }
+
+    try {
+      slapAudio.currentTime = 0;
+      const playAttempt = slapAudio.play();
+
+      if (playAttempt && typeof playAttempt.then === 'function') {
+        playAttempt
+          .then(() => {
+            unbindIntroStartFallback();
+            startIntroVisuals();
+          })
+          .catch(() => {
+            bindIntroStartFallback();
+          });
+      } else {
+        unbindIntroStartFallback();
+        startIntroVisuals();
+      }
+    } catch (_error) {
+      bindIntroStartFallback();
+    }
+  }
+
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     finishIntro();
   } else {
-    window.setTimeout(playSlapSound, 340);
-    window.setTimeout(finishIntro, 1180);
+    tryStartIntro();
   }
 
   if (!howToPlayBtn || !closeBtn || !modal) {
