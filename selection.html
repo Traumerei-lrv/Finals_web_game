@@ -28,6 +28,7 @@
             <strong id="turnLabelPlayer1">Waiting</strong>
           </div>
           <div class="preview-card__stage">
+            <video id="player1PreviewVideo" class="preview-card__video" muted loop playsinline preload="metadata"></video>
             <img id="player1Preview" alt="Player 1 hero preview" class="preview-card__image"
               src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" />
             <div class="preview-card__fallback">Awaiting pick</div>
@@ -52,6 +53,7 @@
             <strong id="turnLabelPlayer2">Waiting</strong>
           </div>
           <div class="preview-card__stage">
+            <video id="player2PreviewVideo" class="preview-card__video" muted loop playsinline preload="metadata"></video>
             <img id="player2Preview" alt="Player 2 hero preview" class="preview-card__image"
               src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" />
             <div class="preview-card__fallback">Awaiting pick</div>
@@ -61,28 +63,30 @@
       </div>
 
       <!-- Hero Roster -->
-      <div class="selection-roster-wrap">
-        <div class="selection-roster" id="heroCardGrid" aria-label="Hero cards">
+      <div class="carousel-shell" aria-label="Hero carousel">
+        <button class="carousel-nav carousel-nav--prev" id="carouselPrev" type="button" aria-label="Previous hero">◀</button>
+        <div class="selection-roster-wrap">
+          <div class="selection-roster" id="heroCardGrid" aria-label="Hero cards">
 
-          <button class="hero-card" type="button" data-hero-id="tuff-baby" data-hero-name="Tuff Baby">
-            <img src="tuff-tuff-baby.gif" alt="Tuff Baby" class="hero-card__image" />
-            <span class="hero-card__slot hero-card__slot--archer">Combo</span>
+          <button class="hero-card" type="button" data-hero-id="sasuke" data-hero-name="Sasuke">
+            <img src="./assets/sasuke/sasuke_poster-removebg-preview.png" alt="Sasuke" class="hero-card__image" />
+            <span class="hero-card__slot hero-card__slot--archer">Sasuke</span>
             <strong>hero card placeholder</strong>
             <small>Rapid slap buff</small>
           </button>
 
           <button class="hero-card" type="button" data-hero-id="elmo-rage" data-hero-name="Elmo Rage">
-            <img src="tuff-tuff-baby.gif" alt="Elmo Rage" class="hero-card__image" />
+            <img src="./assets/epstein/epstein_poster-removebg-preview.png" alt="Elmo Rage" class="hero-card__image" />
             <span class="hero-card__slot hero-card__slot--samurai">Rage</span>
             <strong>hero card placeholder</strong>
             <small>Fire aura slaps</small>
           </button>
 
-          <button class="hero-card" type="button" data-hero-id="will-slap" data-hero-name="Will Slap">
-            <img src="tuff-tuff-baby.gif" alt="Will Slap" class="hero-card__image" />
-            <span class="hero-card__slot hero-card__slot--warrior">Counter</span>
-            <strong>hero card placeholder</strong>
-            <small>Instant counter-hit</small>
+          <button class="hero-card" type="button" data-hero-id="swag" data-hero-name="Swag">
+            <img src="./assets/dog2/dog2_poster-removebg-preview.png" alt="Swag" class="hero-card__image" />
+            <span class="hero-card__slot hero-card__slot--warrior">Swag</span>
+            <strong>Swag</strong>
+            <small>Doggo style</small>
           </button>
 
           <button class="hero-card" type="button" data-hero-id="tung-tank" data-hero-name="Tung Tank">
@@ -90,6 +94,14 @@
             <span class="hero-card__slot hero-card__slot--warrior">Tank</span>
             <strong>hero card placeholder</strong>
             <small>Heavy knockback</small>
+          </button>
+
+          <!-- TungTung -->
+          <button class="hero-card" type="button" data-hero-id="tungtung" data-hero-name="TungTung">
+            <img src="assets/tungtung/tuntung_poster-preview.png" alt="TungTung" class="hero-card__image hero-card__image--tungtung" />
+            <span class="hero-card__slot hero-card__slot--warrior">Impact</span>
+            <strong>TungTung</strong>
+            <small>Preview video ready</small>
           </button>
 
           <!-- Placeholder cards (locked/coming soon) -->
@@ -107,7 +119,9 @@
             <small>Coming soon</small>
           </button>
 
+          </div>
         </div>
+        <button class="carousel-nav carousel-nav--next" id="carouselNext" type="button" aria-label="Next hero">▶</button>
       </div>
 
     </div>

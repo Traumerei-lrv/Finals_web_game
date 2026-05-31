@@ -66,7 +66,7 @@ html, body {
 
 .selection-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 18px;
 }
 
 .selection-header h1 {
@@ -94,13 +94,28 @@ html, body {
   margin-top: 12px;
 }
 
+#selectionStatus {
+  display: none;
+}
+
 /* ─── Selection Panels (Player previews + Center) ─── */
 .selection-panels {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  gap: 24px;
-  margin-bottom: 48px;
+  grid-template-columns: minmax(0, 1fr) 124px minmax(0, 1fr);
+  gap: 14px;
+  width: min(100%, 980px);
+  margin: 0 auto 22px;
   align-items: center;
+}
+
+.selection-panels .preview-card:first-child {
+  justify-self: end;
+  margin-right: 0;
+}
+
+.selection-panels .preview-card:last-child {
+  justify-self: start;
+  margin-left: 0;
 }
 
 @media (max-width: 768px) {
@@ -115,13 +130,15 @@ html, body {
   background: #fff;
   border: 4px solid #1a1a1a;
   border-radius: 12px;
-  padding: 16px;
+  padding: 12px;
   text-align: center;
   box-shadow: 6px 6px 0 #1a1a1a;
+  width: 100%;
+  min-width: 0;
 }
 
 .preview-card__label {
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .preview-card__label span {
@@ -137,28 +154,45 @@ html, body {
   font-size: 28px;
   color: #1a1a1a;
   display: block;
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 .preview-card__stage {
   position: relative;
-  height: 240px;
+  height: 206px;
+  min-height: 206px;
   background: #f5f5f5;
   border: 2px dashed #ccc;
   border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 12px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  margin-bottom: 8px;
 }
 
 .preview-card__image {
-  max-width: 100%;
-  max-height: 100%;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
+  object-position: center center;
+}
+
+.preview-card__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
 }
 
 .preview-card__fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
   font-family: 'Fredoka One', cursive;
   font-size: 14px;
   color: #999;
@@ -172,17 +206,19 @@ html, body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  padding: 16px;
+  gap: 8px;
+  padding: 10px 8px;
   background: #fff;
   border: 4px solid #1a1a1a;
   border-radius: 12px;
   box-shadow: 6px 6px 0 #1a1a1a;
+  width: 100%;
+  min-width: 120px;
 }
 
 .selection-vs {
   font-family: 'Bangers', cursive;
-  font-size: 48px;
+  font-size: 44px;
   color: #ff3c3c;
   text-shadow: 2px 2px 0 #1a1a1a;
   font-weight: bold;
@@ -194,7 +230,7 @@ html, body {
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  margin: 12px 0;
+  margin: 6px 0;
 }
 
 .selection-timer span {
@@ -207,7 +243,7 @@ html, body {
 
 .selection-timer strong {
   font-family: 'Bangers', cursive;
-  font-size: 64px;
+  font-size: 56px;
   color: #1a1a1a;
   line-height: 1;
 }
@@ -226,14 +262,14 @@ html, body {
   background: #ff3c3c;
   color: #fff;
   border: 3px solid #1a1a1a;
-  padding: 12px 32px;
+  padding: 10px 20px;
   border-radius: 8px;
   cursor: pointer;
   transition: transform 0.1s, box-shadow 0.1s;
   box-shadow: 4px 4px 0 #1a1a1a;
   text-transform: uppercase;
   letter-spacing: 1px;
-  margin-top: 8px;
+  margin-top: 2px;
 }
 
 .lock-button:hover:not(:disabled) {
@@ -265,13 +301,48 @@ html, body {
 
 /* ─── Hero Roster ─── */
 .selection-roster-wrap {
-  margin-bottom: 24px;
+  margin-bottom: 12px;
+  overflow: hidden;
 }
 
 .selection-roster {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  display: flex;
   gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: 4px;
+  scrollbar-width: none;
+}
+
+.selection-roster::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-shell {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+}
+
+.carousel-nav {
+  width: 44px;
+  height: 44px;
+  border: 3px solid #1a1a1a;
+  border-radius: 999px;
+  background: #fff;
+  color: #1a1a1a;
+  font-family: 'Bangers', cursive;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 #1a1a1a;
+}
+
+.carousel-nav:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .hero-card {
@@ -284,6 +355,9 @@ html, body {
   box-shadow: 4px 4px 0 #1a1a1a;
   text-align: center;
   font-family: 'Fredoka One', cursive;
+  flex: 0 0 240px;
+  min-width: 240px;
+  scroll-snap-align: center;
 }
 
 .hero-card__image {
@@ -295,6 +369,12 @@ html, body {
   border-radius: 8px;
   margin-bottom: 10px;
   box-shadow: 3px 3px 0 #1a1a1a;
+}
+
+.hero-card__image--tungtung {
+  object-position: center 18%;
+  transform: scale(1.12);
+  transform-origin: center center;
 }
 
 .hero-card:hover:not(:disabled) {
@@ -373,6 +453,155 @@ html, body {
 
 .hero-card.is-selected small {
   color: rgba(255, 255, 255, 0.8);
+}
+
+.hero-card.is-carousel-active {
+  outline: 4px solid #1a1a1a;
+  outline-offset: 2px;
+  transform: translateY(-4px);
+}
+
+@media (min-width: 1100px) and (max-height: 800px) {
+  .selection-screen {
+    align-items: center;
+    padding: 12px 16px;
+  }
+
+  .selection-frame {
+    max-width: 1160px;
+  }
+
+  .selection-header {
+    margin-bottom: 8px;
+  }
+
+  .selection-header h1 {
+    font-size: clamp(36px, 5.2vw, 62px);
+    margin-bottom: 6px;
+    letter-spacing: 2px;
+  }
+
+  .selection-copy {
+    font-size: 14px;
+    margin-top: 6px;
+  }
+
+  .selection-panels {
+    grid-template-columns: minmax(0, 1fr) 112px minmax(0, 1fr);
+    gap: 12px;
+    width: min(100%, 920px);
+    margin: 0 auto 12px;
+    align-items: start;
+  }
+
+  .preview-card {
+    border-width: 4px;
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: 6px 6px 0 #1a1a1a;
+  }
+
+  .preview-card__label {
+    margin-bottom: 6px;
+  }
+
+  .preview-card__label span {
+    font-size: 14px;
+  }
+
+  .preview-card__label strong {
+    font-size: 28px;
+  }
+
+  .preview-card__stage {
+    height: 176px;
+    min-height: 176px;
+    margin-bottom: 6px;
+  }
+
+  .selection-center {
+    gap: 6px;
+    padding: 8px 6px;
+    border-width: 3px;
+    box-shadow: 4px 4px 0 #1a1a1a;
+  }
+
+  .selection-vs {
+    font-size: 34px;
+  }
+
+  .selection-timer {
+    gap: 2px;
+    margin: 4px 0;
+  }
+
+  .selection-timer span {
+    font-size: 12px;
+  }
+
+  .selection-timer strong {
+    font-size: 40px;
+  }
+
+  .selection-timer small {
+    font-size: 10px;
+  }
+
+  .lock-button {
+    font-size: 17px;
+    padding: 7px 14px;
+    margin-top: 2px;
+    box-shadow: 3px 3px 0 #1a1a1a;
+  }
+
+  .selection-roster-wrap {
+    margin-top: 4px;
+    margin-bottom: 8px;
+  }
+
+  .selection-roster {
+    gap: 10px;
+  }
+
+  .carousel-shell {
+    gap: 8px;
+  }
+
+  .carousel-nav {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  .hero-card {
+    border-width: 2px;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 3px 3px 0 #1a1a1a;
+    flex-basis: 180px;
+    min-width: 180px;
+  }
+
+  .hero-card__image {
+    margin-bottom: 6px;
+    box-shadow: 2px 2px 0 #1a1a1a;
+  }
+
+  .hero-card__slot {
+    font-size: 10px;
+    padding: 3px 9px;
+    margin-bottom: 4px;
+  }
+
+  .hero-card strong {
+    font-size: 16px;
+    margin: 5px 0 2px;
+  }
+
+  .hero-card small {
+    font-size: 10px;
+    margin-top: 4px;
+  }
 }
 
 /* Utility classes */
