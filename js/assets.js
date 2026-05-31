@@ -1,24 +1,30 @@
 // Simple asset preloader for the landing page
-const Assets = (function(){
+const Assets = (function () {
   const images = [
-    'tuff-tuff-baby.gif',
-    'will_smith.jpeg',
-    'elmo.jpeg',
-    'tungtung.webp',
-    'baby-laugh-ai-baby.webp',
-    'assets/sasuke/sasuke_Dance.gif',
-    'assets/meme1.png',
-    'gif/flying_monster.gif',
-    'gif/dogie_mons.gif'
+    'assets/intro/background.png',
+    'assets/intro/frame.png',
+    'assets/intro/landing_logo.png',
+    'assets/intro/hand.png',
+    'assets/intro/slap_impact.gif'
   ];
 
-  function preload(cb){
+  function preload(cb) {
     let loaded = 0;
-    if(images.length===0){ cb && cb(); return; }
-    images.forEach(src=>{
+    if (images.length === 0) {
+      if (cb) cb();
+      return;
+    }
+
+    images.forEach((src) => {
       const img = new Image();
-      img.onload = ()=>{ loaded++; if(loaded===images.length) cb && cb(); };
-      img.onerror = ()=>{ loaded++; if(loaded===images.length) cb && cb(); };
+      img.onload = () => {
+        loaded += 1;
+        if (loaded === images.length && cb) cb();
+      };
+      img.onerror = () => {
+        loaded += 1;
+        if (loaded === images.length && cb) cb();
+      };
       img.src = src;
     });
   }
@@ -26,5 +32,6 @@ const Assets = (function(){
   return { preload };
 })();
 
-// Auto-preload on page load
-window.addEventListener('DOMContentLoaded', ()=>{ Assets.preload(); });
+window.addEventListener('DOMContentLoaded', () => {
+  Assets.preload();
+});

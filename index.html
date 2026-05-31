@@ -9,27 +9,36 @@
     <link rel="stylesheet" href="css/landing.css" />
   </head>
   <body>
-    <div class="slap-page">
-      <div class="meme-stickers" aria-hidden="true">
-        <img src="tuff-tuff-baby.gif" alt="" class="sticker sticker--baby" />
-        <img src="tungtung.png" alt="" class="sticker sticker--tung" />
-      </div>
+    <main class="landing-page">
+      <section class="intro-sequence" id="introSequence" aria-hidden="true">
+        <img src="assets/intro/hand.png" alt="" class="intro-hand" />
+        <img src="assets/intro/slap_impact.gif" alt="" class="intro-impact" />
+      </section>
+      <audio id="slapSfx" preload="auto" src="assets/intro/wapak.wav"></audio>
 
-      <div class="hero">
-        <div class="hero-content">
-          <img src="will_smith.png" alt="Will Smith presenting" class="hero-presenter" />
-          <div class="hero-title">SLAP<br />THAT</div>
-          <img src="meme.png" alt="Rage face meme" class="hero-meme" />
+      <img src="assets/intro/frame.png" alt="" class="side-frame reveal-target" aria-hidden="true" />
+
+      <section class="hero-panel reveal-target" aria-label="Game start menu">
+        <img src="assets/intro/landing_logo.png" alt="Slap That" class="landing-logo" />
+
+        <div class="hero-buttons">
+          <a href="selection.html" class="landing-btn landing-btn--primary" id="startBtn">Start Game</a>
+          <button class="landing-btn landing-btn--secondary" id="howToPlayBtn" type="button">How To Play</button>
         </div>
-        <div class="hero-btns">
-          <a href="selection.html" class="btn-main btn-main--censored" id="startBtn"><span>START SLAPPING</span></a>
-          <button class="btn-secondary" id="howToPlayBtn">How to play</button>
+      </section>
+
+      <section class="howto-modal" id="howToPlayModal" aria-hidden="true" role="dialog" aria-labelledby="howToPlayTitle">
+        <div class="howto-card">
+          <h2 id="howToPlayTitle">How To Play</h2>
+          <p>1. Click Start Game to enter character selection.</p>
+          <p>2. Player 1 attacks using <strong>A</strong>, Player 2 attacks using <strong>L</strong>.</p>
+          <p>3. First player to drain the opponent&apos;s HP wins the round.</p>
+          <button class="landing-btn landing-btn--secondary" id="closeHowToPlayBtn" type="button">Close</button>
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
 
     <script src="js/assets.js"></script>
-    <script src="js/ui.js"></script>
+    <script src="js/landing.js"></script>
   </body>
 </html>
- 
