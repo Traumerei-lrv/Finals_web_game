@@ -86,8 +86,32 @@ const soundCache = new Map();
 document.addEventListener('DOMContentLoaded', () => {
   hydrateFighters();
   renderArena();
+  bindArenaResultActions();
   window.addEventListener('keydown', handleKeydown);
 });
+
+function bindArenaResultActions() {
+  const resultPanel = document.getElementById('arenaResult');
+  if (resultPanel) {
+    resultPanel.hidden = true;
+  }
+
+  const playAgainBtn = document.getElementById('playAgainBtn');
+  const chooseAgainBtn = document.getElementById('chooseAgainBtn');
+  const quitBtn = document.getElementById('quitBtn');
+
+  playAgainBtn?.addEventListener('click', () => {
+    window.location.href = 'arena.html';
+  });
+
+  chooseAgainBtn?.addEventListener('click', () => {
+    window.location.href = 'selection.html';
+  });
+
+  quitBtn?.addEventListener('click', () => {
+    window.location.href = 'index.html';
+  });
+}
 
 function hydrateFighters() {
   const storedSelection = readStoredSelection();
@@ -805,11 +829,23 @@ function triggerSlap(attackerId, defenderId) {
     showBattleStatus(isCritical
       ? `${ARENA_STATE.fighters[attackerId].name} lands a critical slapout.`
       : `${ARENA_STATE.fighters[attackerId].name} wins by slapout.`);
+    showArenaResult(attackerId);
   } else {
     showBattleStatus(isCritical
       ? `${ARENA_STATE.fighters[attackerId].name} triggers a critical slap! ${ARENA_STATE.fighters[defenderId].name} is stunned!`
       : `${ARENA_STATE.fighters[attackerId].name} slaps ${ARENA_STATE.fighters[defenderId].name}!`);
   }
+}
+
+function showArenaResult(winnerId) {
+  const resultPanel = document.getElementById('arenaResult');
+  const resultTitle = document.getElementById('arenaResultTitle');
+  if (!resultPanel || !resultTitle) return;
+
+  const winnerName = ARENA_STATE.fighters[winnerId]?.name || 'Unknown';
+  const winnerLabel = winnerId === 'player1' ? 'Player 1' : 'Player 2';
+  resultTitle.textContent = `${winnerLabel} (${winnerName}) wins!`;
+  resultPanel.hidden = false;
 }
 
 function getMeterGain(elapsedMs) {
