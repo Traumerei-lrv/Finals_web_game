@@ -6,6 +6,7 @@ const ARENA_STATE = {
   slapCooldownMs: 220,
   isOver: false,
   winner: null,
+  assetsReady: false,
   lastSlapAt: { player1: 0, player2: 0 },
   stunUntil: { player1: 0, player2: 0 },
   slapMeters: { player1: 0, player2: 0 },
@@ -16,14 +17,14 @@ const ARENA_STATE = {
 };
 
 const PLAYER1_SLAP_FRAMES = [
-  'assets/sasuke/Slap/tile000.png',
-  'assets/sasuke/Slap/tile001.png',
-  'assets/sasuke/Slap/tile002.png',
-  'assets/sasuke/Slap/tile003.png',
-  'assets/sasuke/Slap/tile004.png',
-  'assets/sasuke/Slap/tile005.png',
-  'assets/sasuke/Slap/tile006.png',
-  'assets/sasuke/Slap/tile007.png'
+  'assets/sasuke/Slap/Player 1/tile000.png',
+  'assets/sasuke/Slap/Player 1/tile001.png',
+  'assets/sasuke/Slap/Player 1/tile002.png',
+  'assets/sasuke/Slap/Player 1/tile003.png',
+  'assets/sasuke/Slap/Player 1/tile004.png',
+  'assets/sasuke/Slap/Player 1/tile005.png',
+  'assets/sasuke/Slap/Player 1/tile006.png',
+  'assets/sasuke/Slap/Player 1/tile007.png'
 ];
 
 const PLAYER2_SLAP_FRAMES = [
@@ -81,12 +82,19 @@ const HURT_SOUND_FILES = [
 const CRITICAL_SOUND_FILE = 'assets/sounds/explosion.wav';
 const DEATH_SOUND_FILE = 'assets/sounds/lego-yoda-death-sound-effect.mp3';
 const VICTORY_SOUND_FILE = 'assets/sounds/fatality.mp3';
+const END_ANIMATION_FRAME_DURATION_MS = 140;
+const END_RESULT_BUFFER_MS = 1000;
 const soundCache = new Map();
 
 document.addEventListener('DOMContentLoaded', () => {
   hydrateFighters();
   renderArena();
   bindArenaResultActions();
+  showBattleStatus('Loading fighter assets...');
+  preloadBattleAssets().finally(() => {
+    ARENA_STATE.assetsReady = true;
+    showBattleStatus('Ready to slap.');
+  });
   window.addEventListener('keydown', handleKeydown);
 });
 
@@ -236,6 +244,11 @@ function getBattleAssetRoot(hero) {
   }
 
   return '';
+}
+
+function toAssetUrl(assetPath) {
+  if (!assetPath || typeof assetPath !== 'string') return '';
+  return encodeURI(assetPath);
 }
 
 function getSlapFolder(hero) {
@@ -518,7 +531,7 @@ function getSlapFrame(hero, playerId, filename) {
     : (typeof hero?.slapPlayer2Folder === 'string' && hero.slapPlayer2Folder
       ? hero.slapPlayer2Folder
       : (fallbackConfig?.player2Folder || 'Player 2'));
-  return `${assetRoot}/${slapFolder}/${playerFolder}/${filename}`;
+  return toAssetUrl(`${assetRoot}/${slapFolder}/${playerFolder}/${filename}`);
 }
 
 function getSlapFrames(hero, playerId) {
@@ -546,7 +559,7 @@ function getSlapSheetPath(hero, playerId) {
   const playerFolder = playerId === 'player1'
     ? (typeof hero?.slapPlayer1Folder === 'string' && hero.slapPlayer1Folder ? hero.slapPlayer1Folder : 'Player 1')
     : (typeof hero?.slapPlayer2Folder === 'string' && hero.slapPlayer2Folder ? hero.slapPlayer2Folder : 'Player 2');
-  return `${assetRoot}/${slapFolder}/${playerFolder}/${sheetName}`;
+  return toAssetUrl(`${assetRoot}/${slapFolder}/${playerFolder}/${sheetName}`);
 }
 
 function getSlapSheetConfig(hero, playerId) {
@@ -569,7 +582,7 @@ function getHurtFrame(hero, playerId, filename) {
   const playerFolder = playerId === 'player1'
     ? (typeof hero?.hurtPlayer1Folder === 'string' && hero.hurtPlayer1Folder ? hero.hurtPlayer1Folder : (useSimpleHurtFolders ? 'player1_hurt' : 'normal_hurt_player1'))
     : (typeof hero?.hurtPlayer2Folder === 'string' && hero.hurtPlayer2Folder ? hero.hurtPlayer2Folder : (useSimpleHurtFolders ? 'player2_hurt' : 'normal_hurt_player2'));
-  return `${assetRoot}/${hurtFolder}/${playerFolder}/${filename}`;
+  return toAssetUrl(`${assetRoot}/${hurtFolder}/${playerFolder}/${filename}`);
 }
 
 function getHurtFrames(hero, playerId) {
@@ -599,7 +612,7 @@ function getConfuseFrame(hero, playerId, filename) {
   const playerFolder = playerId === 'player1'
     ? (typeof hero?.confusePlayer1Folder === 'string' && hero.confusePlayer1Folder ? hero.confusePlayer1Folder : (useSimpleConfuseFolders ? 'player1_confuse' : 'confuse_player1'))
     : (typeof hero?.confusePlayer2Folder === 'string' && hero.confusePlayer2Folder ? hero.confusePlayer2Folder : (useSimpleConfuseFolders ? 'player2_confuse' : 'confuse_player2'));
-  return `${assetRoot}/${confuseFolder}/${playerFolder}/${filename}`;
+  return toAssetUrl(`${assetRoot}/${confuseFolder}/${playerFolder}/${filename}`);
 }
 
 function getConfuseFrames(hero, playerId) {
@@ -622,14 +635,14 @@ function getDeathSheet(hero, playerId) {
   const assetRoot = getBattleAssetRoot(hero);
   const deathConfig = getDeathConfig(hero, playerId);
   if (!assetRoot || !deathConfig) return '';
-  return `${assetRoot}/${deathConfig.folder}/${deathConfig.playerFolder}/${deathConfig.sheet}`;
+  return toAssetUrl(`${assetRoot}/${deathConfig.folder}/${deathConfig.playerFolder}/${deathConfig.sheet}`);
 }
 
 function getVictorySheet(hero, playerId) {
   const assetRoot = getBattleAssetRoot(hero);
   const victoryConfig = getVictoryConfig(hero, playerId);
   if (!assetRoot || !victoryConfig) return '';
-  return `${assetRoot}/${victoryConfig.folder}/${victoryConfig.playerFolder}/${victoryConfig.sheet}`;
+  return toAssetUrl(`${assetRoot}/${victoryConfig.folder}/${victoryConfig.playerFolder}/${victoryConfig.sheet}`);
 }
 
 function applyHurtPortraitStyle(imageEl, hero, playerId) {
@@ -767,6 +780,10 @@ function clearPlayerStun(playerId) {
 
 function handleKeydown(event) {
   if (ARENA_STATE.isOver || event.repeat) return;
+  if (!ARENA_STATE.assetsReady) {
+    showBattleStatus('Loading fighter assets...');
+    return;
+  }
   const key = event.key.toLowerCase();
   if (key === 'a') {
     event.preventDefault();
@@ -829,12 +846,88 @@ function triggerSlap(attackerId, defenderId) {
     showBattleStatus(isCritical
       ? `${ARENA_STATE.fighters[attackerId].name} lands a critical slapout.`
       : `${ARENA_STATE.fighters[attackerId].name} wins by slapout.`);
-    showArenaResult(attackerId);
+    showArenaResultAfterAnimations(attackerId, defenderId);
   } else {
     showBattleStatus(isCritical
       ? `${ARENA_STATE.fighters[attackerId].name} triggers a critical slap! ${ARENA_STATE.fighters[defenderId].name} is stunned!`
       : `${ARENA_STATE.fighters[attackerId].name} slaps ${ARENA_STATE.fighters[defenderId].name}!`);
   }
+}
+
+function preloadImage(src) {
+  return new Promise((resolve) => {
+    if (!src) {
+      resolve();
+      return;
+    }
+
+    const image = new Image();
+    let settled = false;
+    const finish = () => {
+      if (settled) return;
+      settled = true;
+      resolve();
+    };
+
+    image.onload = finish;
+    image.onerror = finish;
+    image.src = src;
+
+    // Never block gameplay forever because of one bad/missing frame.
+    window.setTimeout(finish, 4500);
+  });
+}
+
+function collectPlayerAnimationAssets(playerId) {
+  const fighter = ARENA_STATE.fighters[playerId];
+  const hero = fighter?.hero || null;
+  if (!hero) return [];
+
+  const assets = [
+    ...getSlapFrames(hero, playerId),
+    ...getHurtFrames(hero, playerId),
+    ...getConfuseFrames(hero, playerId),
+    getDeathSheet(hero, playerId),
+    getVictorySheet(hero, playerId),
+    getBattlePortrait(hero, playerId)
+  ].filter(Boolean);
+
+  return assets;
+}
+
+function preloadBattleAssets() {
+  const allAssets = [
+    ...collectPlayerAnimationAssets('player1'),
+    ...collectPlayerAnimationAssets('player2')
+  ];
+  const uniqueAssets = Array.from(new Set(allAssets));
+  if (!uniqueAssets.length) return Promise.resolve();
+  return Promise.all(uniqueAssets.map(preloadImage));
+}
+
+function getEndAnimationDurationMs(playerId, type) {
+  const fighter = ARENA_STATE.fighters[playerId];
+  if (!fighter?.hero) return 0;
+
+  const config = type === 'death'
+    ? getDeathConfig(fighter.hero, playerId)
+    : getVictoryConfig(fighter.hero, playerId);
+
+  if (!config || !Number.isFinite(config.frameCount) || config.frameCount < 1) {
+    return 0;
+  }
+
+  return Math.max(0, config.frameCount * END_ANIMATION_FRAME_DURATION_MS);
+}
+
+function showArenaResultAfterAnimations(winnerId, loserId) {
+  const deathDuration = getEndAnimationDurationMs(loserId, 'death');
+  const victoryDuration = getEndAnimationDurationMs(winnerId, 'victory');
+  const delayMs = Math.max(deathDuration, victoryDuration) + END_RESULT_BUFFER_MS;
+
+  window.setTimeout(() => {
+    showArenaResult(winnerId);
+  }, delayMs);
 }
 
 function showArenaResult(winnerId) {

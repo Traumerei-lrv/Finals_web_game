@@ -9,11 +9,16 @@
   const INTRO_DURATION_MS = 1180;
   let introStarted = false;
   let introFinished = false;
-  let introStartFallbackBound = false;
+  let soundFallbackBound = false;
+  let introSoundPlayed = false;
 
   if (slapAudio) {
     slapAudio.load();
   }
+
+  // Always reset classes so intro can replay consistently (including bfcache/back navigation).
+  landingPage?.classList.remove('is-ready');
+  introSequence?.classList.remove('is-done', 'is-playing');
 
   function finishIntro() {
     if (introFinished) {
@@ -42,36 +47,26 @@
     window.setTimeout(finishIntro, INTRO_DURATION_MS);
   }
 
-  function unbindIntroStartFallback() {
-    if (!introStartFallbackBound) {
+  function unbindSoundFallback() {
+    if (!soundFallbackBound) {
       return;
     }
-    window.removeEventListener('pointerdown', handleIntroStartGesture);
-    window.removeEventListener('keydown', handleIntroStartGesture);
-    introStartFallbackBound = false;
+    window.removeEventListener('pointerdown', playSlapSound);
+    window.removeEventListener('keydown', playSlapSound);
+    soundFallbackBound = false;
   }
 
-  function bindIntroStartFallback() {
-    if (introStartFallbackBound || introStarted) {
+  function bindSoundFallback() {
+    if (soundFallbackBound || introSoundPlayed) {
       return;
     }
-    window.addEventListener('pointerdown', handleIntroStartGesture, { once: true });
-    window.addEventListener('keydown', handleIntroStartGesture, { once: true });
-    introStartFallbackBound = true;
+    window.addEventListener('pointerdown', playSlapSound, { once: true });
+    window.addEventListener('keydown', playSlapSound, { once: true });
+    soundFallbackBound = true;
   }
 
-  function handleIntroStartGesture() {
-    unbindIntroStartFallback();
-    tryStartIntro();
-  }
-
-  function tryStartIntro() {
-    if (introStarted) {
-      return;
-    }
-
-    if (!slapAudio) {
-      startIntroVisuals();
+  function playSlapSound() {
+    if (!slapAudio || introSoundPlayed) {
       return;
     }
 
@@ -79,29 +74,26 @@
       slapAudio.currentTime = 0;
       const playAttempt = slapAudio.play();
 
-      if (playAttempt && typeof playAttempt.then === 'function') {
+      if (playAttempt && typeof playAttempt.catch === 'function') {
         playAttempt
           .then(() => {
-            unbindIntroStartFallback();
-            startIntroVisuals();
+            introSoundPlayed = true;
+            unbindSoundFallback();
           })
           .catch(() => {
-            bindIntroStartFallback();
+            bindSoundFallback();
           });
       } else {
-        unbindIntroStartFallback();
-        startIntroVisuals();
+        introSoundPlayed = true;
+        unbindSoundFallback();
       }
     } catch (_error) {
-      bindIntroStartFallback();
+      bindSoundFallback();
     }
   }
 
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    finishIntro();
-  } else {
-    tryStartIntro();
-  }
+  startIntroVisuals();
+  playSlapSound();
 
   if (!howToPlayBtn || !closeBtn || !modal) {
     return;
